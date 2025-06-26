@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychometric Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .question {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .question p {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Psychometric Test</h1>
+    <form id="test-form">
+        {% for question in questions %}
+        <div class="question">
+            <p>{{ question.text }}</p>
+            {% for option in question.options %}
+            <label>
+                <input type="radio" name="question{{ question.id }}" value="{{ option }}"> {{ option }}
+            </label>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <button type="button" onclick="submitTest()">Submit</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        function submitTest() {
+            const form = document.getElementById("test-form");
+            const responses = [];
+            const questions = {{ questions | tojson }};
+
+            // Collect user responses
+            questions.forEach((question) => {
+                const selectedOption = form.querySelector(`input[name="question${question.id}"]:checked`);
+                if (selectedOption) {
+                    responses.push(selectedOption.value);
+                } else {
+                    responses.push("No response");
+                }
+            });
+
+            // Send responses to the backend
+            fetch("/analyze", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ responses: responses })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the career suggestion
+                document.getElementById("result").innerText = data.career_suggestion;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("result").innerText = "An error occurred. Please try again.";
+            });
+        }
+    </script>
+</body>
+</html>

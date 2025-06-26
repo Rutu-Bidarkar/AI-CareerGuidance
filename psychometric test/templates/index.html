@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychometric Test - Career Guidance</title>
+</head>
+<body>
+    <h1>Psychometric Test for Career Guidance</h1>
+    <form id="testForm">
+        <div>
+            <label for="q1">1. How do you feel in social situations?</label>
+            <select id="q1" name="q1">
+                <option value="1">Very uncomfortable</option>
+                <option value="2">Uncomfortable</option>
+                <option value="3">Neutral</option>
+                <option value="4">Comfortable</option>
+                <option value="5">Very comfortable</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="q2">2. Which type of work environment do you prefer?</label>
+            <select id="q2" name="q2">
+                <option value="1">Structured and organized</option>
+                <option value="2">Flexible and creative</option>
+                <option value="3">Dynamic and fast-paced</option>
+                <option value="4">Collaborative and team-oriented</option>
+                <option value="5">Independent and focused</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="q3">3. How do you approach solving problems?</label>
+            <select id="q3" name="q3">
+                <option value="1">Step-by-step analysis</option>
+                <option value="2">Thinking outside the box</option>
+                <option value="3">Following guidelines and procedures</option>
+                <option value="4">Seeking advice from others</option>
+                <option value="5">Trial and error</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="q4">4. Do you enjoy taking leadership roles?</label>
+            <select id="q4" name="q4">
+                <option value="1">Not at all</option>
+                <option value="2">Rarely</option>
+                <option value="3">Sometimes</option>
+                <option value="4">Often</option>
+                <option value="5">Very much</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="q5">5. How interested are you in creative tasks?</label>
+            <select id="q5" name="q5">
+                <option value="1">Not interested</option>
+                <option value="2">Slightly interested</option>
+                <option value="3">Neutral</option>
+                <option value="4">Interested</option>
+                <option value="5">Highly interested</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="q6">6. What is your preferred work style?</label>
+            <select id="q6" name="q6">
+                <option value="1">Working alone</option>
+                <option value="2">Working in small teams</option>
+                <option value="3">Leading projects</option>
+                <option value="4">Collaborating in large groups</option>
+                <option value="5">A mix of all</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="q7">7. How confident are you in analyzing data or complex problems?</label>
+            <select id="q7" name="q7">
+                <option value="1">Not confident</option>
+                <option value="2">Slightly confident</option>
+                <option value="3">Neutral</option>
+                <option value="4">Confident</option>
+                <option value="5">Highly confident</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="q8">8. How do you handle working under tight deadlines?</label>
+            <select id="q8" name="q8">
+                <option value="1">Very stressful</option>
+                <option value="2">Somewhat stressful</option>
+                <option value="3">Neutral</option>
+                <option value="4">Manageable</option>
+                <option value="5">Thriving under pressure</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="q9">9. Do you prefer working with technology or people?</label>
+            <select id="q9" name="q9">
+                <option value="1">Only technology</option>
+                <option value="2">Mostly technology</option>
+                <option value="3">Balanced mix</option>
+                <option value="4">Mostly people</option>
+                <option value="5">Only people</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="q10">10. How do you feel about tackling complex, abstract problems?</label>
+            <select id="q10" name="q10">
+                <option value="1">Avoid them</option>
+                <option value="2">Prefer simple tasks</option>
+                <option value="3">Neutral</option>
+                <option value="4">Find them interesting</option>
+                <option value="5">Love solving them</option>
+            </select>
+        </div>
+
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            const form = document.getElementById('testForm');
+            const responses = {
+                q1: form.q1.value,
+                q2: form.q2.value,
+                q3: form.q3.value,
+                q4: form.q4.value,
+                q5: form.q5.value,
+                q6: form.q6.value,
+                q7: form.q7.value,
+                q8: form.q8.value,
+                q9: form.q9.value,
+                q10: form.q10.value
+            };
+            fetch('/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ responses }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Your result: ' + data.result);
+            });
+        }
+    </script>
+</body>
+</html>
